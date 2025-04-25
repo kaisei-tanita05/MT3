@@ -1,4 +1,6 @@
 #include <Novice.h>
+#include <Vector3.h>
+#include "function.h"
 
 const char kWindowTitle[] = "LE2C_20_タニタ_カイセイ";
 
@@ -11,6 +13,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	// キー入力結果を受け取る箱
 	char keys[256] = {0};
 	char preKeys[256] = {0};
+
+	Vector3 rotate{0.4f, 1.43f, -0.8f};
 
 	// ウィンドウの×ボタンが押されるまでループ
 	while (Novice::ProcessMessage() == 0) {
@@ -25,6 +29,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		/// ↓更新処理ここから
 		///
 
+		Matrix4x4 rotateXMatrix = MakeRotateXMatrix(rotate.x);
+
+		Matrix4x4 rotateYMatrix = MakeRotateYMatrix(rotate.y);
+
+		Matrix4x4 rotateZMatrix = MakeRotateZMatrix(rotate.z);
+
+		Matrix4x4 rotateXYZMatrix = Matrix4x4(Multiply(rotateXMatrix, Multiply(rotateYMatrix, rotateZMatrix)));
+
 		///
 		/// ↑更新処理ここまで
 		///
@@ -32,6 +44,21 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		///
 		/// ↓描画処理ここから
 		///
+
+		Novice::ScreenPrintf(0, 0, "rotateXMatrix");
+		MatrixScreenPrintf(0, 20, rotateXMatrix, "rotateXMatrix");
+
+		Novice::ScreenPrintf(0, kRowHeight * 5, "rotateYMatrix");
+		MatrixScreenPrintf(0, kRowHeight * 5+20, rotateYMatrix, "rotateYMatrix");
+
+		Novice::ScreenPrintf(0, kRowHeight * 5 * 2, "rotateZMatrix");
+		MatrixScreenPrintf(0, kRowHeight * 5 * 2 + 20, rotateZMatrix, "rotateZMatrix");
+
+		Novice::ScreenPrintf(0, kRowHeight * 5 * 3, "rotateXYZMatrix");
+		MatrixScreenPrintf(0, kRowHeight * 5 * 3 + 20, rotateXYZMatrix, "rotateXYZMatrix");
+
+
+
 
 		///
 		/// ↑描画処理ここまで
