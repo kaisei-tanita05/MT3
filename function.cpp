@@ -1,4 +1,4 @@
-#include "function.h"
+#include "Function.h"
 
 Vector3 Add(const Vector3& v1, const Vector3& v2) {
 	Vector3 result = {};
@@ -363,6 +363,32 @@ Matrix4x4 MakeRotateZMatrix(float radian)
 	result.m[3][1] = 0.0f;
 	result.m[3][2] = 0.0f;
 	result.m[3][3] = 1.0f;
+
+	return result; 
+}
+
+Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Vector3& rotate, const Vector3& translate) 
+{
+
+	Matrix4x4 result = {};
+
+	// 拡大縮小行列
+	Matrix4x4 scaleMatrix = MakeScaleMatrix(scale);
+	// 回転行列
+	Matrix4x4 rotateXMatrix = MakeRotateXMatrix(rotate.x);
+	Matrix4x4 rotateYMatrix = MakeRotateYMatrix(rotate.y);
+	Matrix4x4 rotateZMatrix = MakeRotateZMatrix(rotate.z);
+	// 平行移動行列
+	Matrix4x4 translationMatrix = MakeTranslateMatrix(translate);
+	// 拡大縮小行列と回転行列を掛け算
+	result = Multiply(scaleMatrix, rotateXMatrix);
+	// さらにY軸回転行列を掛け算
+	result = Multiply(result, rotateYMatrix);
+	// さらにZ軸回転行列を掛け算
+	result = Multiply(result, rotateZMatrix);
+	// 最後に平行移動行列を掛け算
+	result = Multiply(result, translationMatrix);
+
 
 	return result; 
 }
