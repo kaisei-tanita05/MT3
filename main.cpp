@@ -1,4 +1,3 @@
-#include "function.h"
 #include <Novice.h>
 #include <Vector3.h>
 #include "Function.h"
